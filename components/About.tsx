@@ -12,40 +12,40 @@ const About: React.FC<{ id: string }> = ({ id }) => {
   ];
 
   return (
-    <section id={id} className="py-24 px-6 border-b border-slate-800">
+    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
       <div className="max-w-7xl mx-auto">
         <SectionHeading 
           title="About Me" 
           subtitle="Passionate developer turning complex problems into elegant backend solutions."
         />
 
-        <div className="grid lg:grid-cols-12 gap-12 items-center mt-12">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mt-8 sm:mt-12">
           
           {/* Main Text Content */}
-          <div className="lg:col-span-7 space-y-6">
-            <h3 className="text-2xl font-bold text-slate-100 leading-snug">
+          <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-100 leading-snug">
               Bridging the gap between robust architecture and high performance.
             </h3>
             
-            <p className="text-slate-200 text-lg leading-relaxed">
+            <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
               {PERSONAL_INFO.about}
             </p>
             
-            <p className="text-slate-200 text-lg leading-relaxed">
+            <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
               I have a strong foundation in Data Structures and Algorithms, which allows me to design efficient solutions for complex distributed systems and data-intensive applications.
             </p>
           </div>
 
           {/* Highlights Grid */}
-          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {highlights.map((item, i) => (
-              <div key={i} className="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col items-center text-center gap-3 transition-colors hover:border-slate-700 hover:bg-slate-800">
-                <div className="w-12 h-12 rounded-xl bg-slate-800 text-sky-400 flex items-center justify-center border border-slate-700 shadow-inner">
+              <div key={i} className="bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 flex flex-col items-center text-center gap-3 transition-all hover:border-slate-700 hover:bg-slate-800/90 shadow-sm">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 text-sky-400 flex items-center justify-center border border-slate-700 shadow-inner">
                   {item.icon}
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-200">{item.title}</h4>
-                  <p className="text-sm text-slate-300">{item.desc}</p>
+                  <h4 className="font-bold text-slate-200 text-base sm:text-lg">{item.title}</h4>
+                  <p className="text-xs sm:text-sm text-slate-300">{item.desc}</p>
                 </div>
               </div>
             ))}

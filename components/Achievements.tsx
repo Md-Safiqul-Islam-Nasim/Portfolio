@@ -13,24 +13,24 @@ const iconMap: Record<number, any> = {
 
 const Achievements: React.FC<{ id: string }> = ({ id }) => {
   return (
-    <section id={id} className="py-24 px-6 border-b border-slate-800">
+    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
       <div className="max-w-7xl mx-auto">
         <SectionHeading 
           title="Recognitions" 
           subtitle="Milestones from contests, mentorship roles, and academic excellence."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-12">
           {ACHIEVEMENTS.map((ach, idx) => {
             const Icon = iconMap[idx % 5] || Medal;
             return (
-              <div key={idx} className="bg-slate-900 p-8 rounded-2xl border border-slate-800 hover:border-slate-700 hover:bg-slate-800 transition-colors flex items-start gap-6">
-                <div className="w-14 h-14 rounded-xl bg-slate-800 border border-slate-700 text-sky-400 flex items-center justify-center shrink-0 shadow-inner">
-                  <Icon size={24} />
+              <div key={idx} className="bg-slate-900 p-5 sm:p-8 rounded-2xl border border-slate-800 hover:border-slate-700 hover:bg-slate-800/90 transition-all flex items-start gap-4 sm:gap-6 shadow-sm">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-slate-800 border border-slate-700 text-sky-400 flex items-center justify-center shrink-0 shadow-inner">
+                  <Icon size={22} className="sm:w-6 sm:h-6" />
                 </div>
-                <div>
-                  <h4 className="text-lg font-bold text-slate-100 mb-2 leading-tight">{ach.title}</h4>
-                  <p className="text-slate-200 text-sm leading-relaxed">{ach.description}</p>
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-base sm:text-lg font-bold text-slate-100 mb-1.5 sm:mb-2 leading-tight">{ach.title}</h4>
+                  <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{ach.description}</p>
                 </div>
               </div>
             );

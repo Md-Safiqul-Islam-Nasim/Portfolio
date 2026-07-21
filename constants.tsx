@@ -1,5 +1,5 @@
 
-import { Project, Experience, SkillCategory, PlatformStat } from './types';
+import { Project, Experience, SkillCategory, PlatformStat, Education } from './types';
 
 export const PERSONAL_INFO = {
   name: "Md Safiqul Islam Nasim",
@@ -141,4 +141,21 @@ export const ACHIEVEMENTS = [
   { title: "428th Asia Dhaka Regional 2021", description: "ICPC Regional Participant" },
   { title: "Problem Setter & Judge", description: "DIU Contests (2022-2023)" },
   { title: "Programming Trainer", description: "Mentoring junior CP enthusiasts at DIU" }
+];
+
+export const EDUCATION: Education[] = [
+  {
+    institution: "Daffodil International University",
+    degree: "BSc in Computer Science and Engineering",
+    period: "06/2019 – 07/2023",
+    location: "Dhaka, Bangladesh",
+    description: "Focused on Data Structures, Algorithms, Software Engineering, Database Systems, and System Architecture."
+  },
+  {
+    institution: "Bangladesh Navy College",
+    degree: "Higher Secondary School Certificate",
+    period: "2016 – 2018",
+    location: "Dhaka, Bangladesh",
+    description: "Science background with emphasis on Higher Mathematics, Physics, and Chemistry."
+  }
 ];

@@ -30,3 +30,11 @@ export interface PlatformStat {
   rank?: string;
   maxRating?: number;
 }
+
+export interface Education {
+  institution: string;
+  degree: string;
+  period: string;
+  location: string;
+  description?: string;
+}
