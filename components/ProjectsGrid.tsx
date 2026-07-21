@@ -11,8 +11,8 @@ const ProjectsGrid: React.FC<{ id: string }> = ({ id }) => {
   };
 
   return (
-    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-      <div className="max-w-7xl mx-auto">
+    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-10 border-b border-slate-800">
+      <div className="max-w-[1650px] mx-auto">
         <SectionHeading 
           title="Featured Projects" 
           subtitle="A selection of backend systems and applications I've engineered."

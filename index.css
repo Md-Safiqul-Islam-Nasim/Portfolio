@@ -9,8 +9,8 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #020617; /* slate-950 */
-  color: #f1f5f9; /* slate-100 */
+  background-color: #090d16; /* deep slate charcoal */
+  color: #f8fafc; /* slate-50 */
   overflow-x: hidden;
   width: 100%;
   position: relative;
@@ -32,16 +32,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a; /* slate-900 */
+  background: #090d16;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155; /* slate-700 */
+  background: #1e293b; /* slate-800 */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569; /* slate-600 */
+  background: #334155; /* slate-700 */
 }
 
 /* Utility to ensure word breaking on long strings on mobile */
@@ -60,3 +60,5 @@ img {
 * {
   -webkit-tap-highlight-color: transparent;
 }
+
+

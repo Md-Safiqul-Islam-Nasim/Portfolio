@@ -10,6 +10,7 @@ import Education from './components/Education';
 import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import FloatingDock from './components/FloatingDock';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -39,26 +40,27 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-sky-500 selection:text-white overflow-x-hidden w-full">
-      {/* Global gradient to make it less flat/dark */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 pointer-events-none"></div>
+    <div className="relative min-h-screen bg-[#090d16] text-slate-100 font-sans selection:bg-sky-500 selection:text-white overflow-x-hidden w-full">
+      {/* Global Gradient Backdrop */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-b from-[#090d16] via-[#0b0f19] to-[#090d16] pointer-events-none"></div>
       
-      <div className="relative z-10 w-full overflow-x-hidden">
+      <div className="relative z-10 w-full overflow-x-hidden pb-12 sm:pb-0">
         <Navbar activeSection={activeSection} />
 
         <main className="w-full pt-16">
-          <div className="bg-slate-700/20 backdrop-blur-sm"><Hero id="home" /></div>
-          <div className="bg-slate-800/30"><About id="about" /></div>
-          <div className="bg-slate-700/20 backdrop-blur-sm"><ProjectsGrid id="projects" /></div>
-          <div className="bg-slate-800/30"><SkillsGrid id="skills" /></div>
-          <div className="bg-slate-700/20 backdrop-blur-sm"><ProblemSolvingStats id="problem-solving" /></div>
-          <div className="bg-slate-800/30"><ExperienceTimeline id="experience" /></div>
-          <div className="bg-slate-700/20 backdrop-blur-sm"><Education id="education" /></div>
-          <div className="bg-slate-800/30"><Achievements id="achievements" /></div>
-          <div className="bg-slate-700/20 backdrop-blur-sm"><Contact id="contact" /></div>
+          <div className="bg-slate-900/20 backdrop-blur-sm"><Hero id="home" /></div>
+          <div className="bg-slate-800/20"><About id="about" /></div>
+          <div className="bg-slate-900/20 backdrop-blur-sm"><ProjectsGrid id="projects" /></div>
+          <div className="bg-slate-800/20"><SkillsGrid id="skills" /></div>
+          <div className="bg-slate-900/20 backdrop-blur-sm"><ProblemSolvingStats id="problem-solving" /></div>
+          <div className="bg-slate-800/20"><ExperienceTimeline id="experience" /></div>
+          <div className="bg-slate-900/20 backdrop-blur-sm"><Education id="education" /></div>
+          <div className="bg-slate-800/20"><Achievements id="achievements" /></div>
+          <div className="bg-slate-900/20 backdrop-blur-sm"><Contact id="contact" /></div>
         </main>
 
         <Footer />
+        <FloatingDock />
       </div>
     </div>
   );

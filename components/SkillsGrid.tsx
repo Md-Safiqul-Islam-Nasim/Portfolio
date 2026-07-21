@@ -13,12 +13,12 @@ const iconMap: Record<string, any> = {
 
 const SkillsGrid: React.FC<{ id: string }> = ({ id }) => {
   return (
-    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800 relative overflow-hidden">
+    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-10 border-b border-slate-800 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-1/2 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-sky-500/10 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none -translate-y-1/2"></div>
       <div className="absolute top-1/4 right-1/4 w-60 sm:w-80 h-60 sm:h-80 bg-indigo-500/10 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1650px] mx-auto relative z-10">
         <SectionHeading 
           title="Technical Arsenal" 
           subtitle="Mastery in backend architecture, algorithm design, and full-stack development."
