@@ -153,9 +153,16 @@ export const EDUCATION: Education[] = [
   },
   {
     institution: "Bangladesh Navy College",
-    degree: "Higher Secondary School Certificate",
+    degree: "Higher Secondary School Certificate (HSC)",
     period: "2016 – 2018",
     location: "Dhaka, Bangladesh",
     description: "Science background with emphasis on Higher Mathematics, Physics, and Chemistry."
+  },
+  {
+    institution: "Bashir Uddin Ideal School & College",
+    degree: "Secondary School Certificate (SSC)",
+    period: "2009 – 2016",
+    location: "Dhaka, Bangladesh",
+    description: "Primary and secondary school education with foundational science background."
   }
 ];
