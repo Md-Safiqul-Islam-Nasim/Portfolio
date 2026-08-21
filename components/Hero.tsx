@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Server, Database, Layers, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Server, Database, Layers, ShieldCheck, Download } from 'lucide-react';
 import { PERSONAL_INFO } from '../constants';
 
 const Hero: React.FC<{ id: string }> = ({ id }) => {
@@ -25,10 +25,10 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
         
         {/* Text Side */}
         <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-          <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-sky-400 text-xs sm:text-sm font-medium">
+          <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-green-400 text-xs sm:text-sm font-medium">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
             <span>Available for backend engineering opportunities</span>
           </div>
@@ -46,6 +46,7 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
              <a 
               href="#contact" 
               onClick={(e) => scrollToSection(e, '#contact')}
+              id="hero-cta-contact"
               className="w-full sm:w-auto px-6 py-3.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2 text-base"
             >
               <span>Get in touch</span>
@@ -54,9 +55,19 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
             <a 
               href="#projects" 
               onClick={(e) => scrollToSection(e, '#projects')}
+              id="hero-cta-projects"
               className="w-full sm:w-auto px-6 py-3.5 bg-slate-900 border border-slate-800 text-slate-200 rounded-xl font-semibold hover:bg-slate-800 hover:text-white transition-all shadow flex items-center justify-center gap-2 text-base"
             >
               <span>View Projects</span>
+            </a>
+            <a 
+              href="/resume.pdf"
+              download="Nasim_Resume.pdf"
+              id="hero-cta-resume"
+              className="w-full sm:w-auto px-6 py-3.5 bg-slate-900 border border-slate-700 text-slate-300 rounded-xl font-semibold hover:bg-slate-800 hover:text-sky-400 hover:border-sky-500/50 transition-all shadow flex items-center justify-center gap-2 text-base"
+            >
+              <Download size={16} />
+              <span>Resume</span>
             </a>
           </div>
 
@@ -151,7 +162,7 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
                 <div className="flex gap-3 sm:gap-4 whitespace-pre min-w-[280px]">
                   <div className="flex flex-col text-slate-600 select-none text-right pr-1">
                     <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                    <span>6</span><span>7</span>
+                    <span>6</span><span>7</span><span>8</span>
                   </div>
                   <div className="flex flex-col text-slate-300">
                     <p>{'{'}</p>
@@ -160,7 +171,8 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
                       <p><span className="text-sky-400">"database"</span>: <span className="text-emerald-400">"MySQL (Query Optimized)"</span>,</p>
                       <p><span className="text-sky-400">"auth"</span>: <span className="text-emerald-400">"JWT + Multi-Level RBAC"</span>,</p>
                       <p><span className="text-sky-400">"cache"</span>: <span className="text-emerald-400">"Redis Layer"</span>,</p>
-                      <p><span className="text-sky-400">"performanceBoost"</span>: <span className="text-amber-400">"40%"</span></p>
+                      <p><span className="text-sky-400">"taskEfficiency"</span>: <span className="text-amber-400">"+40%"</span>,</p>
+                      <p><span className="text-sky-400">"apiResponseTime"</span>: <span className="text-amber-400">"-35%"</span></p>
                     </div>
                     <p>{'}'}</p>
                   </div>
@@ -199,4 +211,3 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
 };
 
 export default Hero;
-

@@ -8,7 +8,7 @@ export const PERSONAL_INFO = {
   phone: "01931802944",
   location: "Dhaka, Bangladesh",
   tagline: "API Architect | Problem Solver | Backend Specialist",
-  about: "Backend Software Engineer passionate about building scalable, high-performance server-side applications. 2+ years of experience developing RESTful APIs with Laravel, optimizing database queries, and implementing secure authentication systems.",
+  about: "Backend Software Engineer with close to 2 years of experience building and optimizing RESTful APIs in Laravel, including role-based access control, JWT authentication, and database performance tuning. Delivered backend systems and admin dashboards supporting 1,000+ active users. Strong problem-solving foundation with 2,400+ algorithmic problems solved and 340+ programming contests, including a Codeforces Pupil rating.",
   heroStats: [
     { label: "Problems Solved", value: 2400 },
     { label: "Contests", value: 340 },
@@ -20,38 +20,53 @@ export const EXPERIENCES: Experience[] = [
   {
     company: "CodeWare Limited",
     role: "Junior Software Engineer",
-    period: "05/2024 – Present",
+    period: "May 2025 – Present",
+    location: "Dhaka, Bangladesh · On-site",
     tech: ["Laravel", "Filament", "JWT", "MySQL", "RBAC"],
     description: [
-      "Develop and maintain backend systems with RBAC managing 500+ users across multiple permission levels.",
-      "Built responsive admin dashboards using Filament, improving task management efficiency by 40%.",
-      "Optimized database queries reducing average API response time by 35%.",
-      "Implemented JWT-based authentication and secured 15+ RESTful API endpoints."
+      "Independently built and led the backend (Laravel/MySQL) for a Medical University IRB (Institutional Review Board) management system used by 1,000+ users.",
+      "Contributed to the backend (Laravel/MySQL) of a bus ticketing system deployed across 20+ countries, serving nearly 1 million users.",
+      "Designed a Laravel-based RBAC system with JWT authentication, managing permissions for 500+ users.",
+      "Built admin dashboards using Filament and optimized database queries, improving task management efficiency by 40% and reducing API response time by 35%."
     ]
   },
   {
     company: "Softvence",
     role: "Junior Laravel Developer",
-    period: "10/2023 – 05/2024",
+    period: "Oct 2024 – May 2025",
+    location: "Dhaka, Bangladesh · Remote",
     tech: ["Laravel 9", "MySQL", "REST API", "Real-time Systems"],
     description: [
-      "Developed scalable RESTful API for Android application serving 1000+ active users using Laravel 9.",
-      "Created admin dashboard with approval workflows, reducing task processing time by 50%.",
-      "Built real-time leaderboard system and player task tracking modules.",
-      "Optimized MySQL queries improving database performance by 40%."
+      "Built a scalable RESTful API in Laravel 9 to power an Android application used by 1,000+ active users.",
+      "Implemented real-time chat functionality and a notification queue system for the application.",
+      "Developed an admin dashboard with approval workflows, cutting task processing time by 50%.",
+      "Designed a real-time leaderboard system and player task-tracking modules.",
+      "Optimized MySQL queries, improving database performance by 40%."
+    ]
+  },
+  {
+    company: "Medina Tech Ltd.",
+    role: "Software Engineer Intern",
+    period: "Oct 2023 – Nov 2023",
+    location: "Dhaka, Bangladesh · On-site",
+    isInternship: true,
+    tech: ["Kotlin", "Android", "Bitbucket"],
+    description: [
+      "Android development using Kotlin as part of a structured internship program.",
+      "Version control with Bitbucket within a collaborative team workflow."
     ]
   }
 ];
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    title: "Backend Development",
-    skills: ["Laravel", "Spring Boot", "C#", "Node.js (Basic)"],
+    title: "Backend & Frameworks",
+    skills: ["Laravel", "RESTful API Design", "Spring Boot", "Node.js (Basic)"],
     icon: "database"
   },
   {
     title: "Programming Languages",
-    skills: ["C++", "Java", "Python", "PHP", "TypeScript"],
+    skills: ["PHP", "Java", "C++", "Python", "TypeScript"],
     icon: "code"
   },
   {
@@ -60,13 +75,13 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     icon: "server"
   },
   {
-    title: "Frontend & Mobile",
-    skills: ["React.js", "Angular", "Tailwind CSS", "Flutter", "Kotlin"],
+    title: "Core Concepts & Architecture",
+    skills: ["Data Structures & Algorithms", "OOP", "RBAC", "JWT Authentication"],
     icon: "monitor"
   },
   {
-    title: "Tools & DevOps",
-    skills: ["Git", "GitHub", "Bitbucket", "Jira", "Postman", "Docker"],
+    title: "Tools & Platforms",
+    skills: ["Git", "GitHub", "Bitbucket", "Jira", "Postman"],
     icon: "wrench"
   }
 ];
@@ -86,18 +101,28 @@ export const PROJECTS: Project[] = [
     demo: "https://play.google.com/store/apps/details?id=kc.app.socor&hl=en"
   },
   {
-    title: "BMU Admin & Research System",
-    type: "University Management Platform",
+    title: "University IRB Management System",
+    type: "Institutional Platform",
     description: [
-      "Built comprehensive administrative and research management platform for Bangladesh Medical University.",
-      "Developed Institutional Review Board (IRB) module with automated review workflows and PDF certificate generation.",
-      "Implemented Academic & Syndicate meeting management with decision tracking and member portals.",
-      "Created dynamic CMS supporting multiple subdomains for departmental portals using Filament."
+      "Independently built and led the full backend for Bangladesh Medical University's Institutional Review Board (IRB) system — serving 1,000+ active users across faculty, researchers, and administrators.",
+      "Challenge: IRB workflows are multi-stage, multi-role processes with strict audit requirements — a single flat permission model wouldn't scale. Approach: Designed a layered RBAC system with role-specific portals, automated review routing, and PDF certificate generation triggered on approval state changes. Result: Eliminated manual approval bottlenecks, reducing review cycle time significantly.",
+      "Extended the platform with Academic & Syndicate meeting management, decision tracking, and a dynamic CMS supporting multiple departmental subdomains via Filament."
     ],
     tech: ["Laravel", "Filament", "MySQL", "RBAC"],
-    metrics: ["Automated Workflows", "Dynamic Subdomains"],
-    image: "/bmu.png",
+    metrics: ["1,000+ Active Users", "Automated Review Workflows", "Multi-Subdomain CMS"],
+    image: "/bmu_dashboard.jpg",
     demo: "https://www.bmu.ac.bd/"
+  },
+  {
+    title: "Global Bus Ticketing System",
+    type: "Large-Scale Backend",
+    description: [
+      "Contributed to the backend of a bus ticketing platform deployed across 20+ countries and serving nearly 1 million users — the largest-scale system in this portfolio.",
+      "Challenge: A ticketing system at this scale must handle concurrent seat reservations across distributed operators without double-booking. Approach: Implemented transactional booking logic with database-level locking, operator-scoped RBAC, and a route/schedule management engine flexible enough to support diverse country-specific configurations. Result: System successfully handles high-throughput bookings reliably across all 20+ markets.",
+      "Note: Client details are under NDA — scale metrics shared with permission."
+    ],
+    tech: ["Laravel", "MySQL", "REST API", "RBAC"],
+    metrics: ["~1 Million Users", "20+ Countries", "High-Concurrency Bookings"]
   },
   {
     title: "DevFlow",
@@ -130,9 +155,9 @@ export const PROBLEM_SOLVING: PlatformStat[] = [
   { platform: "Codeforces", count: "1350+", rank: "Pupil", maxRating: 1218 },
   { platform: "CodeChef", count: "140+", rank: "3-Star", maxRating: 1736 },
   { platform: "LeetCode", count: "260+", rank: "Top 15%" },
-  { platform: "HackerRank", count: "200+", rank: "5-Star Gold" },
-  { platform: "UVa", count: "290", rank: "Top Solvers" },
-  { platform: "Beecrowd", count: "262", rank: "Elite" }
+  { platform: "HackerRank", count: "200+" },
+  { platform: "UVa", count: "290" },
+  { platform: "Beecrowd", count: "262" }
 ];
 
 export const ACHIEVEMENTS = [

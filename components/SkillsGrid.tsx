@@ -41,11 +41,12 @@ const SkillsGrid: React.FC<{ id: string }> = ({ id }) => {
                 
                 <h3 className="text-lg sm:text-xl font-bold text-slate-100 mb-4 sm:mb-6 tracking-tight group-hover:text-sky-400 transition-colors duration-300">{category.title}</h3>
 
+                {/* Neutral skill tags — muted gray, reserve color for CTAs & achievements */}
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill, i) => (
                     <span 
                       key={i} 
-                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-slate-800/60 text-slate-300 border border-slate-700/50 rounded-lg text-xs sm:text-sm font-semibold tracking-wide hover:bg-sky-500/20 hover:text-sky-300 hover:border-sky-500/50 transition-all duration-300 cursor-default"
+                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-slate-800/60 text-slate-400 border border-slate-700/40 rounded-lg text-xs sm:text-sm font-semibold tracking-wide hover:bg-slate-700/60 hover:text-slate-200 hover:border-slate-600/60 transition-all duration-300 cursor-default"
                     >
                       {skill}
                     </span>

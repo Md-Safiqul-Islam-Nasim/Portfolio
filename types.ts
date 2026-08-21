@@ -4,18 +4,21 @@ export interface Project {
   type: string;
   description: string[];
   tech: string[];
-  image: string;
+  image?: string;
   metrics?: string[];
   github?: string;
   demo?: string;
+  caseStudy?: string;
 }
 
 export interface Experience {
   company: string;
   role: string;
   period: string;
+  location?: string;
   description: string[];
   tech: string[];
+  isInternship?: boolean;
 }
 
 export interface SkillCategory {

@@ -18,9 +18,9 @@ const ProblemSolvingStats: React.FC<{ id: string }> = ({ id }) => {
             { label: "Contests Partaken", value: "340+" },
             { label: "Codeforces Rank", value: "Pupil" }
           ].map((stat, i) => (
-            <div key={i} className="p-6 sm:p-8 bg-sky-500 rounded-2xl text-center text-white border border-sky-400 shadow-[0_0_30px_-5px_rgba(14,165,233,0.3)]">
-              <h4 className="text-sky-100 font-medium text-xs sm:text-sm uppercase tracking-wider mb-2">{stat.label}</h4>
-              <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold">{stat.value}</p>
+            <div key={i} className="p-6 sm:p-8 bg-slate-900 rounded-2xl text-center border border-amber-500/20 shadow-[0_0_30px_-5px_rgba(245,185,66,0.15)] hover:border-amber-500/40 hover:shadow-[0_0_40px_-5px_rgba(245,185,66,0.2)] transition-all">
+              <h4 className="text-amber-400/70 font-medium text-xs sm:text-sm uppercase tracking-wider mb-2">{stat.label}</h4>
+              <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-amber-400">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -36,14 +36,18 @@ const ProblemSolvingStats: React.FC<{ id: string }> = ({ id }) => {
                 <h5 className="font-bold text-slate-100 text-base sm:text-lg truncate">{item.platform}</h5>
                 <p className="text-xs sm:text-sm text-slate-300 font-medium">{item.count} Problems</p>
               </div>
-              <div className="text-right shrink-0">
-                <span className="inline-block px-3 py-1 bg-slate-950 border border-slate-800 text-sky-400 rounded-full text-xs font-bold uppercase tracking-wider">
-                  {item.rank}
-                </span>
-                {item.maxRating && (
-                  <p className="text-xs text-slate-400 mt-1.5 font-medium">Max: <span className="text-slate-200">{item.maxRating}</span></p>
-                )}
-              </div>
+              {(item.rank || item.maxRating) && (
+                <div className="text-right shrink-0">
+                  {item.rank && (
+                    <span className="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full text-xs font-bold uppercase tracking-wider">
+                      {item.rank}
+                    </span>
+                  )}
+                  {item.maxRating && (
+                    <p className="text-xs text-slate-400 mt-1.5 font-medium">Max: <span className="text-slate-200">{item.maxRating}</span></p>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>

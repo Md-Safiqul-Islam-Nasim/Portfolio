@@ -5,10 +5,10 @@ import SectionHeading from './SectionHeading';
 
 const About: React.FC<{ id: string }> = ({ id }) => {
   const highlights = [
-    { icon: <User size={24} />, title: "2+ Years", desc: "Experience" },
-    { icon: <Zap size={24} />, title: "40% Boost", desc: "Performance" },
-    { icon: <Award size={24} />, title: "2400+", desc: "Problems Solved" },
-    { icon: <Code size={24} />, title: "Full-Stack", desc: "Architecture" }
+    { icon: <User size={24} />, title: "2+ Years", desc: "Experience", accent: "sky" },
+    { icon: <Zap size={24} />, title: "35% Faster", desc: "API Response Time", accent: "amber" },
+    { icon: <Award size={24} />, title: "2400+", desc: "Problems Solved", accent: "amber" },
+    { icon: <Code size={24} />, title: "Full-Stack", desc: "Architecture", accent: "sky" }
   ];
 
   return (
@@ -40,11 +40,17 @@ const About: React.FC<{ id: string }> = ({ id }) => {
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {highlights.map((item, i) => (
               <div key={i} className="bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 flex flex-col items-center text-center gap-3 transition-all hover:border-slate-700 hover:bg-slate-800/90 shadow-sm">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 text-sky-400 flex items-center justify-center border border-slate-700 shadow-inner">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center border shadow-inner ${
+                  item.accent === 'amber'
+                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+                    : 'bg-slate-800 border-slate-700 text-sky-400'
+                }`}>
                   {item.icon}
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-200 text-base sm:text-lg">{item.title}</h4>
+                  <h4 className={`font-bold text-base sm:text-lg ${
+                    item.accent === 'amber' ? 'text-amber-400' : 'text-slate-200'
+                  }`}>{item.title}</h4>
                   <p className="text-xs sm:text-sm text-slate-300">{item.desc}</p>
                 </div>
               </div>

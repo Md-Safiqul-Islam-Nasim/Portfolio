@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Download } from 'lucide-react';
 
 interface NavbarProps {
   activeSection: string;
@@ -74,11 +74,11 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             <span className="text-xl font-bold tracking-tight text-white group-hover:text-sky-400 transition-colors">
               Nasim
             </span>
-            <span className="w-2 h-2 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(14,165,233,0.8)]"></span>
+            <span className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.substring(1);
               return (
@@ -94,6 +94,15 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 </a>
               );
             })}
+            <a
+              href="/resume.pdf"
+              download="Nasim_Resume.pdf"
+              id="navbar-resume-download"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-800 hover:bg-sky-500 border border-slate-700 hover:border-sky-500 text-slate-200 hover:text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-sm"
+            >
+              <Download size={14} />
+              <span>Resume</span>
+            </a>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -132,6 +141,16 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 </a>
               );
             })}
+            {/* Resume download in mobile menu */}
+            <a
+              href="/resume.pdf"
+              download="Nasim_Resume.pdf"
+              id="mobile-resume-download"
+              className="flex items-center gap-2 px-4 py-3.5 rounded-xl text-base font-semibold text-sky-400 border border-sky-500/20 bg-sky-500/10 hover:bg-sky-500/20 transition-all"
+            >
+              <Download size={16} />
+              <span>Download Resume</span>
+            </a>
           </div>
         </div>
       </header>
