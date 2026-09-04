@@ -95,8 +95,8 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               );
             })}
             <a
-              href="/resume.pdf"
-              download="Nasim_Resume.pdf"
+              href="/Md_Safiqul_Islam_Nasim_Resume.pdf"
+              download="Md_Safiqul_Islam_Nasim_Resume.pdf"
               id="navbar-resume-download"
               className="flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-800 hover:bg-sky-500 border border-slate-700 hover:border-sky-500 text-slate-200 hover:text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-sm"
             >
@@ -143,8 +143,8 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             })}
             {/* Resume download in mobile menu */}
             <a
-              href="/resume.pdf"
-              download="Nasim_Resume.pdf"
+              href="/Md_Safiqul_Islam_Nasim_Resume.pdf"
+              download="Md_Safiqul_Islam_Nasim_Resume.pdf"
               id="mobile-resume-download"
               className="flex items-center gap-2 px-4 py-3.5 rounded-xl text-base font-semibold text-sky-400 border border-sky-500/20 bg-sky-500/10 hover:bg-sky-500/20 transition-all"
             >

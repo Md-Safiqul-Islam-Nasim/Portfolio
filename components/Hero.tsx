@@ -61,8 +61,8 @@ const Hero: React.FC<{ id: string }> = ({ id }) => {
               <span>View Projects</span>
             </a>
             <a 
-              href="/resume.pdf"
-              download="Nasim_Resume.pdf"
+              href="/Md_Safiqul_Islam_Nasim_Resume.pdf"
+              download="Md_Safiqul_Islam_Nasim_Resume.pdf"
               id="hero-cta-resume"
               className="w-full sm:w-auto px-6 py-3.5 bg-slate-900 border border-slate-700 text-slate-300 rounded-xl font-semibold hover:bg-slate-800 hover:text-sky-400 hover:border-sky-500/50 transition-all shadow flex items-center justify-center gap-2 text-base"
             >
