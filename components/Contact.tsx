@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { PERSONAL_INFO } from '../constants';
-import SectionHeading from './SectionHeading';
+import { ArrowUpRight, Check, Copy, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { PERSONAL_INFO, SOCIALS } from '../constants';
+import SectionHeader, { Accent } from './ui/SectionHeader';
+import Reveal from './ui/Reveal';
+import Magnetic from './ui/Magnetic';
+import { GithubIcon, LinkedinIcon } from './ui/BrandIcons';
 
 const Contact: React.FC<{ id: string }> = ({ id }) => {
   const [formState, setFormState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState<string>('');
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard?.writeText(PERSONAL_INFO.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,169 +23,254 @@ const Contact: React.FC<{ id: string }> = ({ id }) => {
     setStatusMessage('');
 
     const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
-
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const firstName = formData.get('firstName') as string;
-    const lastName = formData.get('lastName') as string;
-    const email = formData.get('email') as string;
-    const message = formData.get('message') as string;
+    const firstName = (formData.get('firstName') as string) || '';
+    const lastName = (formData.get('lastName') as string) || '';
+    const email = (formData.get('email') as string) || '';
+    const message = (formData.get('message') as string) || '';
 
-    if (!accessKey) {
-      // Fallback: Open mailto link if key is not configured yet
-      const subject = encodeURIComponent(`Portfolio Inquiry from ${firstName} ${lastName}`);
+    if (!accessKey || accessKey === 'PLACEHOLDER_API_KEY') {
+      const subject = encodeURIComponent(`Portfolio Inquiry from ${firstName} ${lastName}`.trim());
       const body = encodeURIComponent(`Name: ${firstName} ${lastName}\nEmail: ${email}\n\nMessage:\n${message}`);
       window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subject}&body=${body}`;
-      
       setFormState('sent');
-      setStatusMessage('Opened mail client to send message!');
+      setStatusMessage('Opened your email client to send the message.');
       return;
     }
 
     try {
-      formData.append("access_key", accessKey);
-      formData.append("from_name", `${firstName} ${lastName}`);
-      formData.append("subject", `New Portfolio Contact: ${firstName} ${lastName}`);
+      formData.append('access_key', accessKey);
+      formData.append('from_name', `${firstName} ${lastName}`.trim());
+      formData.append('subject', `New Portfolio Contact: ${firstName} ${lastName}`.trim());
 
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
       });
-
       const data = await response.json();
 
       if (data.success) {
         setFormState('sent');
-        setStatusMessage('Thank you! Your message has been sent successfully.');
+        setStatusMessage('Thank you! Your message has been sent.');
         form.reset();
       } else {
         setFormState('error');
-        setStatusMessage(data.message || 'Error sending message. Please try emailing directly.');
+        setStatusMessage(data.message || 'Error sending message. Please email directly.');
       }
-    } catch (err) {
-      console.error('Submission error:', err);
+    } catch {
       setFormState('error');
       setStatusMessage('Network error. Please email directly.');
     }
   };
 
   return (
-    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading 
-          title="Get In Touch" 
-          subtitle="Let's discuss your next project or potential collaboration opportunities."
+    <section id={id} aria-labelledby="contact-title" className="relative overflow-hidden border-t border-white/[0.06] bg-ink-2/40 py-24 sm:py-28">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-1/2 -z-10 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(76,141,255,0.16),rgba(155,107,255,0.1)_45%,transparent_70%)] blur-3xl"
+      />
+
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeader
+          id="contact-title"
+          index="07"
+          eyebrow="Contact"
+          title={
+            <>
+              Let&rsquo;s build something <Accent>meaningful together.</Accent>
+            </>
+          }
+          description="Open to Backend / Software Engineer roles, API architecture consulting, and engineering collaborations."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 lg:gap-12 mt-10 sm:mt-16 bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
-          
-          <div className="lg:col-span-2 bg-slate-950 p-6 sm:p-8 lg:p-12 text-slate-100 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800">
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Contact Information</h3>
-              <p className="text-slate-200 text-base sm:text-lg leading-relaxed mb-6 sm:mb-12">
-                I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
-              </p>
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* Direct channels */}
+          <Reveal className="lg:col-span-5">
+            <div className="surface flex h-full flex-col justify-between rounded-[28px] p-6 sm:p-9">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-soft">
+                  <span className="h-2 w-2 rounded-full bg-mint" />
+                  Responding within 24 hours
+                </div>
 
-              <div className="flex flex-col gap-6 sm:gap-8">
-                {[
-                  { icon: <Mail />, label: "Email", value: PERSONAL_INFO.email, link: `mailto:${PERSONAL_INFO.email}` },
-                  { icon: <Phone />, label: "Phone", value: PERSONAL_INFO.phone, link: `tel:${PERSONAL_INFO.phone}` },
-                  { icon: <MapPin />, label: "Location", value: PERSONAL_INFO.location, link: "#" }
-                ].map((item, i) => (
-                  <a 
-                    key={i} 
-                    href={item.link}
-                    className="flex items-start sm:items-center gap-4 sm:gap-6 group min-w-0"
+                <h3 className="mt-6 text-2xl font-semibold tracking-tight text-fg">Direct contact</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  Prefer direct email or a quick call? Reach out anytime through any of the channels below.
+                </p>
+
+                <div className="mt-8 space-y-4">
+                  <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.07] bg-ink/50 p-4">
+                    <a href={SOCIALS.email} className="flex min-w-0 items-center gap-3.5 group">
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-electric-soft">
+                        <Mail size={17} />
+                      </span>
+                      <div className="min-w-0">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">Email</div>
+                        <div className="truncate text-sm font-medium text-fg group-hover:text-electric-soft">
+                          {PERSONAL_INFO.email}
+                        </div>
+                      </div>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={copyEmail}
+                      aria-label="Copy email address"
+                      className="icon-btn h-9 w-9 shrink-0"
+                    >
+                      {copied ? <Check size={15} className="text-mint" /> : <Copy size={15} />}
+                    </button>
+                  </div>
+
+                  <a
+                    href={SOCIALS.phone}
+                    className="flex items-center gap-3.5 rounded-2xl border border-white/[0.07] bg-ink/50 p-4 transition-colors hover:border-white/15"
                   >
-                    <div className="text-sky-500 group-hover:text-sky-400 transition-colors shrink-0 mt-1 sm:mt-0">
-                      {React.cloneElement(item.icon as React.ReactElement<any>, { size: 22 })}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <span className="text-xs sm:text-sm font-medium text-slate-400 block mb-0.5">{item.label}</span>
-                      <span className="text-sm sm:text-base md:text-lg font-bold text-slate-200 group-hover:text-white transition-colors break-all break-word-mobile">{item.value}</span>
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-electric-soft">
+                      <Phone size={17} />
+                    </span>
+                    <div>
+                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">Phone</div>
+                      <div className="text-sm font-medium text-fg">{PERSONAL_INFO.phone}</div>
                     </div>
                   </a>
-                ))}
+
+                  <div className="flex items-center gap-3.5 rounded-2xl border border-white/[0.07] bg-ink/50 p-4">
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-electric-soft">
+                      <MapPin size={17} />
+                    </span>
+                    <div>
+                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">Location</div>
+                      <div className="text-sm font-medium text-fg">{PERSONAL_INFO.location}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 border-t border-white/[0.06] pt-6">
+                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">Profiles</div>
+                <div className="mt-3 flex flex-wrap gap-2.5">
+                  <a
+                    href={SOCIALS.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-ghost px-4 py-2 text-xs"
+                  >
+                    <GithubIcon size={15} /> GitHub <ArrowUpRight size={14} />
+                  </a>
+                  <a
+                    href={SOCIALS.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-ghost px-4 py-2 text-xs"
+                  >
+                    <LinkedinIcon size={14} /> LinkedIn <ArrowUpRight size={14} />
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="lg:col-span-3 p-6 sm:p-8 lg:p-12">
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-                <div className="space-y-1.5 sm:space-y-2">
-                  <label className="text-xs sm:text-sm font-semibold text-slate-300">First Name</label>
-                  <input 
-                    type="text" 
+          {/* Form */}
+          <Reveal delay={0.1} className="lg:col-span-7">
+            <form onSubmit={handleSubmit} className="surface rounded-[28px] p-6 sm:p-9">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="firstName" className="mb-2 block text-xs font-medium text-soft">
+                    First name
+                  </label>
+                  <input
+                    id="firstName"
                     name="firstName"
+                    type="text"
                     required
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600 text-slate-100 text-sm sm:text-base"
                     placeholder="John"
+                    className="field"
                   />
                 </div>
-                <div className="space-y-1.5 sm:space-y-2">
-                  <label className="text-xs sm:text-sm font-semibold text-slate-300">Last Name</label>
-                  <input 
-                    type="text" 
+                <div>
+                  <label htmlFor="lastName" className="mb-2 block text-xs font-medium text-soft">
+                    Last name
+                  </label>
+                  <input
+                    id="lastName"
                     name="lastName"
+                    type="text"
                     required
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600 text-slate-100 text-sm sm:text-base"
                     placeholder="Doe"
+                    className="field"
                   />
                 </div>
               </div>
-              <div className="space-y-1.5 sm:space-y-2">
-                <label className="text-xs sm:text-sm font-semibold text-slate-300">Email Address</label>
-                <input 
-                  type="email" 
+
+              <div className="mt-5">
+                <label htmlFor="email" className="mb-2 block text-xs font-medium text-soft">
+                  Email address
+                </label>
+                <input
+                  id="email"
                   name="email"
+                  type="email"
                   required
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600 text-slate-100 text-sm sm:text-base"
                   placeholder="name@company.com"
+                  className="field"
                 />
               </div>
-              <div className="space-y-1.5 sm:space-y-2">
-                <label className="text-xs sm:text-sm font-semibold text-slate-300">Message</label>
-                <textarea 
+
+              <div className="mt-5">
+                <label htmlFor="message" className="mb-2 block text-xs font-medium text-soft">
+                  Project details or message
+                </label>
+                <textarea
+                  id="message"
                   name="message"
                   required
-                  rows={4}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600 text-slate-100 text-sm sm:text-base resize-none"
-                  placeholder="How can I help you?"
-                ></textarea>
+                  rows={5}
+                  placeholder="Tell me about the system you're building, timeline, or role..."
+                  className="field resize-none"
+                />
               </div>
 
               {statusMessage && (
-                <div className={`p-3 rounded-xl text-xs sm:text-sm font-medium ${
-                  formState === 'sent' 
-                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                    : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                }`}>
+                <div
+                  role="status"
+                  className={`mt-5 rounded-2xl border px-4 py-3 text-xs font-medium ${
+                    formState === 'sent'
+                      ? 'border-mint/30 bg-mint/10 text-mint'
+                      : 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                  }`}
+                >
                   {statusMessage}
                 </div>
               )}
 
-              <button 
-                type="submit" 
-                disabled={formState === 'sending'}
-                className={`w-full py-3.5 sm:py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all text-sm sm:text-base ${
-                  formState === 'sent' 
-                    ? 'bg-emerald-500 text-white cursor-default' 
-                    : 'bg-sky-500 hover:bg-sky-600 text-white shadow-lg shadow-sky-500/20'
-                }`}
-              >
-                {formState === 'idle' && (
-                  <>Send Message <Send size={18} /></>
-                )}
-                {formState === 'sending' && 'Sending...'}
-                {formState === 'sent' && 'Message Sent!'}
-                {formState === 'error' && (
-                  <>Retry Sending <Send size={18} /></>
-                )}
-              </button>
-            </form>
-          </div>
+              <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
+                <p className="text-xs text-faint">
+                  Or email directly at{' '}
+                  <a href={SOCIALS.email} className="text-soft underline decoration-white/20 underline-offset-4 hover:text-fg">
+                    {PERSONAL_INFO.email}
+                  </a>
+                </p>
 
+                <Magnetic>
+                  <button type="submit" disabled={formState === 'sending'} className="btn-primary">
+                    {formState === 'idle' && (
+                      <>
+                        Send Message <Send size={15} />
+                      </>
+                    )}
+                    {formState === 'sending' && 'Sending...'}
+                    {formState === 'sent' && 'Message Sent'}
+                    {formState === 'error' && (
+                      <>
+                        Retry Sending <Send size={15} />
+                      </>
+                    )}
+                  </button>
+                </Magnetic>
+              </div>
+            </form>
+          </Reveal>
         </div>
       </div>
     </section>

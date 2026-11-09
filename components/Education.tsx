@@ -1,61 +1,66 @@
 import React from 'react';
-import { GraduationCap, Calendar, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { GraduationCap, MapPin } from 'lucide-react';
 import { EDUCATION } from '../constants';
-import SectionHeading from './SectionHeading';
+import SectionHeader, { Accent } from './ui/SectionHeader';
+import { staggerChild, staggerParent } from './ui/Reveal';
+import TiltCard from './ui/TiltCard';
 
-const Education: React.FC<{ id: string }> = ({ id }) => {
-  return (
-    <section id={id} className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading 
-          title="Education & Credentials" 
-          subtitle="Academic qualifications and foundational engineering degree."
-        />
+const Education: React.FC<{ id: string }> = ({ id }) => (
+  <section id={id} aria-labelledby="education-title" className="relative py-24 sm:py-32">
+    <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <SectionHeader
+        id="education-title"
+        index="06"
+        eyebrow="Education"
+        title={
+          <>
+            Academic <Accent>foundation.</Accent>
+          </>
+        }
+        description="Formal training in Computer Science & Engineering and foundational sciences."
+      />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 sm:mt-12">
-          {EDUCATION.map((edu, idx) => (
-            <div 
-              key={idx}
-              className="bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-800 hover:border-sky-500/40 hover:bg-slate-800/90 transition-all duration-300 flex flex-col justify-between shadow-lg group relative overflow-hidden"
-            >
-              {/* Subtle accent gradient on hover */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-500/0 to-transparent group-hover:via-sky-500/60 transition-all duration-500 rounded-t-2xl"></div>
-
-              <div>
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-950/60 border border-sky-800/50 text-sky-400 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300">
-                    <GraduationCap size={24} />
+      <motion.div
+        variants={staggerParent}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+        className="grid gap-5 lg:grid-cols-3"
+      >
+        {EDUCATION.map((edu, idx) => (
+          <motion.div key={edu.institution} variants={staggerChild}>
+            <TiltCard max={4} className="rounded-3xl">
+              <article className="surface flex h-full flex-col justify-between rounded-3xl p-6 sm:p-8">
+                <div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-electric-soft">
+                      <GraduationCap size={20} />
+                    </span>
+                    <span className="font-mono text-xs text-electric-soft">{edu.period}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-950 border border-slate-800 text-sky-400 rounded-full text-xs font-semibold tracking-wide">
-                    <Calendar size={13} />
-                    <span>{edu.period}</span>
-                  </div>
+
+                  <h3 className="mt-6 text-xl font-semibold tracking-tight text-fg">{edu.degree}</h3>
+                  <p className="mt-1.5 text-sm font-medium text-soft">{edu.institution}</p>
+
+                  {edu.description && (
+                    <p className="mt-4 text-sm leading-relaxed text-muted">{edu.description}</p>
+                  )}
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-100 group-hover:text-sky-400 transition-colors mb-1.5 leading-snug">
-                  {edu.degree}
-                </h3>
-                <h4 className="text-base font-semibold text-slate-300 mb-3">
-                  {edu.institution}
-                </h4>
-
-                {edu.description && (
-                  <p className="text-sm text-slate-400 leading-relaxed mb-6">
-                    {edu.description}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex items-center gap-2 pt-4 border-t border-slate-800/80 text-xs text-slate-400 font-medium">
-                <MapPin size={14} className="text-sky-500" />
-                <span>{edu.location}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+                <div className="mt-6 flex items-center justify-between border-t border-white/[0.06] pt-4 text-xs text-faint">
+                  <span className="inline-flex items-center gap-1.5">
+                    <MapPin size={12} /> {edu.location}
+                  </span>
+                  <span className="font-mono">0{idx + 1}</span>
+                </div>
+              </article>
+            </TiltCard>
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  </section>
+);
 
 export default Education;

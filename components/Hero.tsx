@@ -1,210 +1,257 @@
-import React, { useState } from 'react';
-import { ArrowRight, Server, Database, Layers, ShieldCheck, Download } from 'lucide-react';
-import { PERSONAL_INFO } from '../constants';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Database, Download, Layers, MapPin, Server, ShieldCheck } from 'lucide-react';
+import { HERO_STATS, PERSONAL_INFO, SOCIALS } from '../constants';
+import { GithubIcon, LinkedinIcon } from './ui/BrandIcons';
+import Magnetic from './ui/Magnetic';
+import { hasWebGL, useIsDesktop, useReducedMotion } from '../hooks/useMedia';
+
+const HeroScene = lazy(() => import('./three/HeroScene'));
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.75, delay, ease: EASE },
+});
+
+/** Clean architectural diagram fallback while WebGL initializes or if disabled. */
+const ArchitectureFallback: React.FC = () => (
+  <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
+    <div className="relative h-64 w-64">
+      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.22)_0%,rgba(139,92,246,0.12)_50%,transparent_72%)] blur-xl" />
+      <div className="absolute inset-8 rounded-full border border-electric/25" />
+      <div className="absolute inset-16 rounded-full border border-violet/20" />
+    </div>
+  </div>
+);
 
 const Hero: React.FC<{ id: string }> = ({ id }) => {
-  const [activeTab, setActiveTab] = useState<'config' | 'architecture' | 'env'>('config');
+  const isDesktop = useIsDesktop();
+  const reduced = useReducedMotion();
+  const [webgl, setWebgl] = useState<boolean | null>(null);
+  const [mountScene, setMountScene] = useState(false);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const targetId = href.replace('#', '');
-    const elem = document.getElementById(targetId);
-    if (elem) {
-      const yOffset = -64; 
-      const y = elem.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
+  useEffect(() => {
+    setWebgl(hasWebGL());
+    const ric: (cb: () => void) => number =
+      (window as any).requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 150));
+    const handle = ric(() => setMountScene(true));
+    return () => {
+      (window as any).cancelIdleCallback?.(handle);
+      clearTimeout(handle);
+    };
+  }, []);
 
   return (
-    <section id={id} className="min-h-[calc(100vh-4rem)] flex items-center px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12 sm:pb-16 md:pb-24 overflow-hidden relative">
-      {/* Background Subtle Radial Accent */}
-      <div className="absolute top-0 right-[15%] w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-sky-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <section
+      id={id}
+      aria-label="Introduction"
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 pb-16 sm:pt-32 lg:pt-28 lg:pb-20"
+    >
+      {/* Subtle architectural grid & ambient glow */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="bg-grid mask-radial absolute inset-0 opacity-75" />
+        <div className="absolute -top-48 right-[-8%] h-[560px] w-[560px] rounded-full bg-electric/15 blur-[140px]" />
+        <div className="absolute top-[35%] right-[18%] h-[420px] w-[420px] rounded-full bg-violet/12 blur-[140px]" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-ink" />
+      </div>
 
-      <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10">
-        
-        {/* Text Side */}
-        <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-          <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-green-400 text-xs sm:text-sm font-medium">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            <span>Available for backend engineering opportunities</span>
-          </div>
-          
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-slate-100 leading-[1.12]">
-            Backend <br className="hidden sm:inline"/>
-            <span className="text-sky-400">Software Engineer.</span>
-          </h1>
-          
-          <p className="text-base sm:text-lg lg:text-xl text-slate-300 max-w-xl leading-relaxed font-light">
-            I architect high-availability backend systems, optimize databases for maximum efficiency, and translate complex logic into clean production code.
-          </p>
+      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          {/* ---------- Left Column: Executive Introduction ---------- */}
+          <div className="relative z-10 lg:col-span-7">
+            <motion.div
+              {...fadeUp(0.05)}
+              className="mb-6 inline-flex flex-wrap items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] py-1.5 pr-3.5 pl-2.5 text-xs text-soft"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-mint" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-mint" />
+              </span>
+              <span className="font-medium text-fg">Available for Backend / Software Engineer roles</span>
+              <span className="text-white/20">·</span>
+              <span className="inline-flex items-center gap-1 text-muted">
+                <MapPin size={12} /> {PERSONAL_INFO.location}
+              </span>
+            </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
-             <a 
-              href="#contact" 
-              onClick={(e) => scrollToSection(e, '#contact')}
-              id="hero-cta-contact"
-              className="w-full sm:w-auto px-6 py-3.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2 text-base"
-            >
-              <span>Get in touch</span>
-              <ArrowRight size={18} />
-            </a>
-            <a 
-              href="#projects" 
-              onClick={(e) => scrollToSection(e, '#projects')}
-              id="hero-cta-projects"
-              className="w-full sm:w-auto px-6 py-3.5 bg-slate-900 border border-slate-800 text-slate-200 rounded-xl font-semibold hover:bg-slate-800 hover:text-white transition-all shadow flex items-center justify-center gap-2 text-base"
-            >
-              <span>View Projects</span>
-            </a>
-            <a 
-              href="/Md_Safiqul_Islam_Nasim_Resume.pdf"
-              download="Md_Safiqul_Islam_Nasim_Resume.pdf"
-              id="hero-cta-resume"
-              className="w-full sm:w-auto px-6 py-3.5 bg-slate-900 border border-slate-700 text-slate-300 rounded-xl font-semibold hover:bg-slate-800 hover:text-sky-400 hover:border-sky-500/50 transition-all shadow flex items-center justify-center gap-2 text-base"
-            >
-              <Download size={16} />
-              <span>Resume</span>
-            </a>
-          </div>
+            <motion.div {...fadeUp(0.12)} className="flex flex-wrap items-center gap-2.5">
+              <span className="font-mono text-xs font-medium tracking-wider text-electric-soft uppercase">
+                Hello, I&rsquo;m {PERSONAL_INFO.name}
+              </span>
+              <span className="h-1 w-1 rounded-full bg-white/25" />
+              <span className="font-mono text-xs text-muted">{PERSONAL_INFO.role}</span>
+            </motion.div>
 
-          {/* Core Tech Stack */}
-          <div className="pt-4 border-t border-slate-800/80 flex flex-wrap items-center gap-2.5">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Stack:</span>
-            {[
-              { name: "Laravel", icon: Server },
-              { name: "MySQL / Redis", icon: Database },
-              { name: "System Design", icon: Layers },
-              { name: "REST API / JWT", icon: ShieldCheck }
-            ].map((tech, idx) => {
-              const TechIcon = tech.icon;
-              return (
-                <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-slate-900 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">
-                  <TechIcon size={13} className="text-sky-400" />
-                  <span>{tech.name}</span>
+            <motion.h1
+              {...fadeUp(0.18)}
+              className="mt-4 text-[2.35rem] leading-[1.08] font-semibold tracking-[-0.038em] text-fg sm:text-5xl lg:text-[3.55rem]"
+            >
+              Engineering reliable{' '}
+              <span className="text-gradient">backend architectures,</span> RESTful APIs &amp; high-throughput databases.
+            </motion.h1>
+
+            <motion.p
+              {...fadeUp(0.26)}
+              className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-[1.08rem]"
+            >
+              Backend Software Engineer with nearly <span className="font-medium text-soft">2 years</span> of production
+              experience building <span className="font-medium text-soft">Laravel &amp; MySQL</span> systems — from
+              independently leading a university IRB platform (<span className="font-medium text-soft">1,000+ active users</span>)
+              to contributing to a multi-country bus ticketing backend serving{' '}
+              <span className="font-medium text-soft">nearly 1 million users</span>. Backed by{' '}
+              <span className="font-medium text-soft">2,400+ algorithmic problems</span> solved across 340+ contests.
+            </motion.p>
+
+            {/* Core Technical Specializations */}
+            <motion.div {...fadeUp(0.32)} className="mt-6 flex flex-wrap gap-2">
+              {[
+                { label: 'Laravel & REST APIs', icon: Server },
+                { label: 'MySQL & Query Optimization', icon: Database },
+                { label: 'JWT & Multi-Role RBAC', icon: ShieldCheck },
+                { label: 'Filament Admin & System Design', icon: Layers },
+              ].map(({ label, icon: Icon }) => (
+                <span key={label} className="chip">
+                  <Icon size={13} className="text-electric-soft" />
+                  {label}
+                </span>
+              ))}
+            </motion.div>
+
+            {/* Primary CTAs & Verified Profiles */}
+            <motion.div {...fadeUp(0.38)} className="mt-8 flex flex-wrap items-center gap-3">
+              <Magnetic>
+                <a href="#contact" className="btn-primary group">
+                  Contact Me
+                  <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href={PERSONAL_INFO.resume} download={PERSONAL_INFO.resumeFileName} className="btn-ghost">
+                  <Download size={16} />
+                  Download Resume
+                </a>
+              </Magnetic>
+              <a href="#projects" className="btn-ghost">
+                View Projects
+              </a>
+
+              <div className="ml-1 flex items-center gap-2">
+                <a
+                  href={SOCIALS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub profile"
+                  className="icon-btn"
+                >
+                  <GithubIcon size={17} />
+                </a>
+                <a
+                  href={SOCIALS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn profile"
+                  className="icon-btn"
+                >
+                  <LinkedinIcon size={16} />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Quantified Engineering Metrics */}
+            <motion.dl
+              {...fadeUp(0.46)}
+              className="mt-11 grid grid-cols-2 gap-4 border-t border-white/[0.08] pt-7 sm:grid-cols-4 sm:gap-6"
+            >
+              {HERO_STATS.map((s) => (
+                <div key={s.label}>
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd className="text-2xl font-semibold tracking-tight text-fg sm:text-[1.7rem]">{s.value}</dd>
+                  <dd className="mt-1 text-xs leading-snug text-muted">{s.label}</dd>
                 </div>
-              );
-            })}
+              ))}
+            </motion.dl>
           </div>
-        </div>
 
-        {/* Tabbed Technical Code Window */}
-        <div className="lg:col-span-5 w-full mt-6 lg:mt-0">
-          <div className="w-full bg-[#0b0f19] rounded-2xl sm:rounded-3xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col">
-            
-            {/* Terminal Header & Tabs */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-[#070a12]">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
+          {/* ---------- Right Column: 3D Architecture Visual + Engineer Identity Card ---------- */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.15, ease: EASE }}
+            className="relative lg:col-span-5"
+          >
+            <div className="surface relative h-[420px] w-full overflow-hidden rounded-3xl sm:h-[490px] lg:h-[540px]">
+              <span aria-hidden className="gradient-border opacity-50" />
+
+              {/* Top Telemetry Header inside the 3D Viewport */}
+              <div className="relative z-10 flex items-center justify-between border-b border-white/[0.07] bg-ink/60 px-4 py-3 backdrop-blur-md">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-mint" />
+                  <span className="font-mono text-[11px] font-medium text-soft">
+                    system.topology // 3-tier-backend
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] text-muted">INTERACTIVE 3D</span>
               </div>
 
-              {/* Tabs */}
-              <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
-                <button
-                  onClick={() => setActiveTab('config')}
-                  className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors ${
-                    activeTab === 'config' ? 'bg-sky-500/20 text-sky-400 font-semibold' : 'text-slate-400 hover:text-slate-200'
-                  }`}
+              {/* 3D Software Architecture Canvas */}
+              <div className="relative h-[calc(100%-3rem)] w-full">
+                {webgl && mountScene ? (
+                  <Suspense fallback={<ArchitectureFallback />}>
+                    <HeroScene lite={!isDesktop} reducedMotion={reduced} />
+                  </Suspense>
+                ) : (
+                  <ArchitectureFallback />
+                )}
+
+                {/* Tier Labels Overlay */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute top-4 left-4 flex flex-col gap-1.5 font-mono text-[10px]"
                 >
-                  sys_config.ts
-                </button>
-                <button
-                  onClick={() => setActiveTab('architecture')}
-                  className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors ${
-                    activeTab === 'architecture' ? 'bg-sky-500/20 text-sky-400 font-semibold' : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  arch.json
-                </button>
-                <button
-                  onClick={() => setActiveTab('env')}
-                  className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors ${
-                    activeTab === 'env' ? 'bg-sky-500/20 text-sky-400 font-semibold' : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  stack.env
-                </button>
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md border border-white/10 bg-ink/75 px-2.5 py-1 text-electric-soft backdrop-blur">
+                    <span className="h-1.5 w-1.5 rounded-full bg-electric" />
+                    T1 · API Gateway &amp; JWT/RBAC
+                  </span>
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md border border-white/10 bg-ink/75 px-2.5 py-1 text-violet-soft backdrop-blur">
+                    <span className="h-1.5 w-1.5 rounded-full bg-violet" />
+                    T2 · Laravel Services &amp; Queues
+                  </span>
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md border border-white/10 bg-ink/75 px-2.5 py-1 text-mint backdrop-blur">
+                    <span className="h-1.5 w-1.5 rounded-full bg-mint" />
+                    T3 · MySQL Cluster &amp; Redis
+                  </span>
+                </div>
+
+                {/* Anchored Engineer Identity Card with Portrait */}
+                <div className=" glass absolute inset-x-3 bottom-3 z-10 flex items-center justify-between gap-3 rounded-2xl p-3 shadow-2xl sm:inset-x-4 sm:bottom-4 sm:p-3.5">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <img
+                      src={PERSONAL_INFO.photo}
+                      alt={PERSONAL_INFO.name}
+                      width={48}
+                      height={48}
+                      className="h-11 w-11 shrink-0 rounded-xl border border-white/15 object-cover object-top"
+                    />
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-semibold text-fg">{PERSONAL_INFO.name}</div>
+                      <div className="truncate text-xs text-muted">
+                        {PERSONAL_INFO.currentRole} @ <span className="text-soft">{PERSONAL_INFO.currentCompany}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <a
+                    href="#projects"
+                    className="shrink-0 rounded-lg border border-electric/30 bg-electric/15 px-2.5 py-1.5 font-mono text-[11px] font-medium text-electric-soft transition-colors hover:bg-electric/25"
+                  >
+                    5 Systems →
+                  </a>
+                </div>
               </div>
             </div>
-
-            {/* Terminal Body */}
-            <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm text-slate-300 min-h-[300px] relative bg-[#090d16] overflow-x-auto">
-              {activeTab === 'config' && (
-                <div className="flex gap-3 sm:gap-4 whitespace-pre min-w-[280px]">
-                  <div className="flex flex-col text-slate-600 select-none text-right pr-1">
-                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                    <span>6</span><span>7</span><span>8</span><span>9</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <p><span className="text-sky-400">const</span> <span className="text-slate-100 font-semibold">engineer</span> = {'{'}</p>
-                    <div className="pl-3 sm:pl-4 space-y-0.5">
-                      <p>name: <span className="text-emerald-400">"{PERSONAL_INFO.name}"</span>,</p>
-                      <p>role: <span className="text-emerald-400">"Backend Architect"</span>,</p>
-                      <p>skills: [</p>
-                      <p className="pl-3 sm:pl-4 text-emerald-400">"System Design",</p>
-                      <p className="pl-3 sm:pl-4 text-emerald-400">"PHP / Laravel",</p>
-                      <p className="pl-3 sm:pl-4 text-emerald-400">"Data Structures & Algos"</p>
-                      <p>],</p>
-                      <p>problemsSolved: <span className="text-amber-400">2400+</span>,</p>
-                      <p>location: <span className="text-emerald-400">"{PERSONAL_INFO.location}"</span></p>
-                    </div>
-                    <p>{'};'}</p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'architecture' && (
-                <div className="flex gap-3 sm:gap-4 whitespace-pre min-w-[280px]">
-                  <div className="flex flex-col text-slate-600 select-none text-right pr-1">
-                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                    <span>6</span><span>7</span><span>8</span>
-                  </div>
-                  <div className="flex flex-col text-slate-300">
-                    <p>{'{'}</p>
-                    <div className="pl-3 sm:pl-4 space-y-0.5">
-                      <p><span className="text-sky-400">"framework"</span>: <span className="text-emerald-400">"Laravel 10 / Filament"</span>,</p>
-                      <p><span className="text-sky-400">"database"</span>: <span className="text-emerald-400">"MySQL (Query Optimized)"</span>,</p>
-                      <p><span className="text-sky-400">"auth"</span>: <span className="text-emerald-400">"JWT + Multi-Level RBAC"</span>,</p>
-                      <p><span className="text-sky-400">"cache"</span>: <span className="text-emerald-400">"Redis Layer"</span>,</p>
-                      <p><span className="text-sky-400">"taskEfficiency"</span>: <span className="text-amber-400">"+40%"</span>,</p>
-                      <p><span className="text-sky-400">"apiResponseTime"</span>: <span className="text-amber-400">"-35%"</span></p>
-                    </div>
-                    <p>{'}'}</p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'env' && (
-                <div className="flex gap-3 sm:gap-4 whitespace-pre min-w-[280px]">
-                  <div className="flex flex-col text-slate-600 select-none text-right pr-1">
-                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                    <span>6</span>
-                  </div>
-                  <div className="flex flex-col text-slate-300">
-                    <p><span className="text-sky-400">APP_ENV</span>=<span className="text-emerald-400">production</span></p>
-                    <p><span className="text-sky-400">DB_CONNECTION</span>=<span className="text-emerald-400">mysql</span></p>
-                    <p><span className="text-sky-400">CACHE_DRIVER</span>=<span className="text-emerald-400">redis</span></p>
-                    <p><span className="text-sky-400">CODEFORCES_RANK</span>=<span className="text-amber-400">Pupil</span></p>
-                    <p><span className="text-sky-400">CODECHEF_RATING</span>=<span className="text-emerald-400">1736 (3-Star)</span></p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Footer */}
-            <div className="px-4 py-2 border-t border-slate-800 bg-[#070a12] flex items-center justify-between text-[11px] font-mono text-slate-400">
-              <span>status: active</span>
-              <span className="text-sky-400">UTF-8</span>
-            </div>
-
-          </div>
+          </motion.div>
         </div>
-
       </div>
     </section>
   );

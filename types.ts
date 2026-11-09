@@ -1,14 +1,24 @@
+export type ProjectVisual = 'screenshot' | 'logo' | 'appIcon' | 'banner' | 'diagram';
 
 export interface Project {
+  slug: string;
   title: string;
   type: string;
-  description: string[];
+  summary: string;
+  highlights: string[];
+  challenge?: string;
+  approach?: string;
+  result?: string;
+  note?: string;
   tech: string[];
-  image?: string;
   metrics?: string[];
+  image?: string;
+  imageAlt?: string;
+  visual: ProjectVisual;
   github?: string;
   demo?: string;
-  caseStudy?: string;
+  demoLabel?: string;
+  featured?: boolean;
 }
 
 export interface Experience {
@@ -19,12 +29,20 @@ export interface Experience {
   description: string[];
   tech: string[];
   isInternship?: boolean;
+  current?: boolean;
+}
+
+export interface Skill {
+  name: string;
+  /** simple-icons slug key, resolved in the Skills section */
+  icon?: string;
 }
 
 export interface SkillCategory {
   title: string;
-  skills: string[];
-  icon: string;
+  blurb: string;
+  skills: Skill[];
+  icon: 'code' | 'server' | 'database' | 'shield' | 'layout' | 'wrench';
 }
 
 export interface PlatformStat {
@@ -40,4 +58,9 @@ export interface Education {
   period: string;
   location: string;
   description?: string;
+}
+
+export interface Achievement {
+  title: string;
+  description: string;
 }
